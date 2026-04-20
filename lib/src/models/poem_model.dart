@@ -1,3 +1,5 @@
+// ignore_for_file: sort_constructors_first
+
 /// Classical Chinese poem model
 class Poem {
   /// Poem title
