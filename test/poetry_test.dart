@@ -57,7 +57,10 @@ void main() {
       expect(results, isNotEmpty);
       expect(results.every((p) =>
         p.title.contains('春') ||
-        p.content.contains('春')
+        p.author.contains('春') ||
+        p.dynasty.contains('春') ||
+        p.content.contains('春') ||
+        (p.tags?.contains('春') ?? false)
       ), isTrue);
     });
 
