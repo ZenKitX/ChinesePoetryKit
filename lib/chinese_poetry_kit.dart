@@ -1,5 +1,6 @@
 /// ChinesePoetryKit - A Chinese poetry package for Flutter apps
-///
+library;
+
 /// This package provides:
 /// - A database of classical Chinese poems
 /// - Smart matching by weather, solar term, and season
