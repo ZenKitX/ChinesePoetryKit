@@ -3,12 +3,7 @@ import '../models/poem_model.dart';
 
 /// Poetry service for intelligent poem matching
 class PoetryService {
-  final PoetryDatabase database;
-
-  /// Create poetry service
-  ///
-  /// [database] - Poetry database instance
-  PoetryService({required this.database});
+  PoetryService._();
 
   /// Get poem with intelligent matching
   ///
@@ -21,57 +16,76 @@ class PoetryService {
   /// [weatherCondition] - Weather condition (e.g., "rain", "snow", "sunny")
   /// [solarTerm] - Solar term (e.g., "立春", "雨水")
   /// [season] - Season (e.g., "春", "夏", "秋", "冬")
-  Poem getPoem({
+  static Poem getPoem({
     String? weatherCondition,
     String? solarTerm,
     String? season,
   }) {
     // Priority 1: Solar term
     if (solarTerm != null && solarTerm.isNotEmpty) {
-      return database.getPoemBySolarTerm(solarTerm);
+      return PoetryDatabase.getPoemBySolarTerm(solarTerm);
     }
 
     // Priority 2: Weather condition
     if (weatherCondition != null && weatherCondition.isNotEmpty) {
-      return database.getPoemByWeather(weatherCondition);
+      return PoetryDatabase.getPoemByWeather(weatherCondition);
     }
 
     // Priority 3: Season
     if (season != null && season.isNotEmpty) {
-      return database.getPoemBySeason(season);
+      return PoetryDatabase.getPoemBySeason(season);
     }
 
     // Priority 4: Default
-    return database.getRandomPoem();
+    return PoetryDatabase.getRandomPoem();
   }
 
   /// Get poem by weather condition
-  Poem getPoemByWeather(String weatherCondition) {
-    return database.getPoemByWeather(weatherCondition);
+  static Poem getPoemByWeather(String weatherCondition) {
+    return PoetryDatabase.getPoemByWeather(weatherCondition);
   }
 
   /// Get poem by solar term
-  Poem getPoemBySolarTerm(String solarTerm) {
-    return database.getPoemBySolarTerm(solarTerm);
+  static Poem getPoemBySolarTerm(String solarTerm) {
+    return PoetryDatabase.getPoemBySolarTerm(solarTerm);
   }
 
   /// Get poem by season
-  Poem getPoemBySeason(String season) {
-    return database.getPoemBySeason(season);
+  static Poem getPoemBySeason(String season) {
+    return PoetryDatabase.getPoemBySeason(season);
+  }
+
+  /// Get poem by dynasty
+  static List<Poem> getPoemsByDynasty(String dynasty) {
+    return PoetryDatabase.getPoemsByDynasty(dynasty);
   }
 
   /// Get random poem
-  Poem getRandomPoem() {
-    return database.getRandomPoem();
+  static Poem getRandomPoem() {
+    return PoetryDatabase.getRandomPoem();
   }
 
   /// Search poems by keyword
-  List<Poem> searchPoems(String keyword) {
-    return database.searchPoems(keyword);
+  static List<Poem> search(String keyword) {
+    return PoetryDatabase.searchPoems(keyword);
   }
 
   /// Get all poems
-  List<Poem> getAllPoems() {
-    return database.allPoems;
+  static List<Poem> get allPoems => PoetryDatabase.allPoems;
+
+  /// Get poem by title
+  static Poem? getPoemByTitle(String title) {
+    return PoetryDatabase.getPoemByTitle(title);
   }
+
+  /// Get poems by tag
+  static List<Poem> getPoemsByTag(String tag) {
+    return PoetryDatabase.getPoemsByTag(tag);
+  }
+
+  /// Get available tags
+  static List<String> get availableTags => PoetryDatabase.availableTags;
+
+  /// Get available dynasties
+  static List<String> get availableDynasties => PoetryDatabase.availableDynasties;
 }

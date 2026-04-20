@@ -29,7 +29,6 @@ class PoetryExamplePage extends StatefulWidget {
 }
 
 class _PoetryExamplePageState extends State<PoetryExamplePage> {
-  final PoetryService _poetryService = PoetryService();
   Poem? _currentPoem;
   String _selectedMode = 'Random';
 
@@ -41,30 +40,33 @@ class _PoetryExamplePageState extends State<PoetryExamplePage> {
 
   void _getRandomPoem() {
     setState(() {
-      _currentPoem = _poetryService.getRandomPoem();
+      _currentPoem = PoetryService.getRandomPoem();
     });
   }
 
   void _getPoemByWeather(String weather) {
     setState(() {
-      _currentPoem = _poetryService.getPoem(weatherCondition: weather);
+      _currentPoem = PoetryService.getPoem(weatherCondition: weather);
     });
   }
 
   void _getPoemBySeason(String season) {
     setState(() {
-      _currentPoem = _poetryService.getPoem(season: season);
+      _currentPoem = PoetryService.getPoem(season: season);
     });
   }
 
   void _getPoemByDynasty(String dynasty) {
-    setState(() {
-      _currentPoem = _poetryService.getPoemByDynasty(dynasty);
-    });
+    final poems = PoetryService.getPoemsByDynasty(dynasty);
+    if (poems.isNotEmpty) {
+      setState(() {
+        _currentPoem = poems.first;
+      });
+    }
   }
 
   void _searchPoem(String keyword) {
-    final results = _poetryService.search(keyword);
+    final results = PoetryService.search(keyword);
     if (results.isNotEmpty) {
       setState(() {
         _currentPoem = results.first;
@@ -197,13 +199,13 @@ class _PoetryExamplePageState extends State<PoetryExamplePage> {
               ],
             ),
             const SizedBox(height: 16),
-            if (_currentPoem!.tags.isNotEmpty)
+            if (_currentPoem!.tags != null && _currentPoem!.tags!.isNotEmpty)
               Wrap(
                 spacing: 8.0,
                 runSpacing: 8.0,
-                children: _currentPoem!.tags.map((tag) {
+                children: _currentPoem!.tags!.split(',').map((tag) {
                   return Chip(
-                    label: Text(tag),
+                    label: Text(tag.trim()),
                     visualDensity: VisualDensity.compact,
                   );
                 }).toList(),
@@ -212,19 +214,19 @@ class _PoetryExamplePageState extends State<PoetryExamplePage> {
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.grey[50],
+                color: Colors.grey.shade50,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[200]!),
+                border: Border.all(color: Colors.grey.shade200),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: _currentPoem!.content.asMap().entries.map((entry) {
+                children: _currentPoem!.content.split('，').asMap().entries.map((entry) {
                   final index = entry.key;
                   final line = entry.value;
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
-                      '${(index + 1).toString().padLeft(2, '0')}. $line',
+                      '${(index + 1).toString().padLeft(2, '0')}. ${line.trim()}。',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontFamily: 'serif',
                             height: 1.8,

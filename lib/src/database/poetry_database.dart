@@ -132,6 +132,44 @@ class PoetryDatabase {
     ];
   }
 
+  /// Get poems by tag
+  static List<Poem> getPoemsByTag(String tag) {
+    return allPoems.where((poem) => poem.tags?.contains(tag) ?? false).toList();
+  }
+
+  /// Get poems by dynasty
+  static List<Poem> getPoemsByDynasty(String dynasty) {
+    return allPoems.where((poem) => poem.dynasty == dynasty).toList();
+  }
+
+  /// Get poem by title
+  static Poem? getPoemByTitle(String title) {
+    for (final poem in allPoems) {
+      if (poem.title == title) {
+        return poem;
+      }
+    }
+    return null;
+  }
+
+  /// Get all available dynasties
+  static List<String> get availableDynasties {
+    final dynasties = allPoems.map((p) => p.dynasty).toSet().toList();
+    dynasties.sort();
+    return dynasties;
+  }
+
+  /// Get all available tags
+  static List<String> get availableTags {
+    final tags = <String>{};
+    for (final poem in allPoems) {
+      if (poem.tags != null) {
+        tags.addAll(poem.tags!.split(','));
+      }
+    }
+    return tags.toList()..sort();
+  }
+
   // Private: Load rain poems
   static List<Poem> _loadRainPoems() {
     return [

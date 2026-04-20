@@ -1,7 +1,3 @@
-library chinese_poetry_kit;
-
-import 'dart:math';
-
 /// ChinesePoetryKit - A Chinese poetry package for Flutter apps
 ///
 /// This package provides:
@@ -12,7 +8,7 @@ import 'dart:math';
 ///
 /// Usage:
 /// ```dart
-/// final poem = PoetryDatabase.getPoemByWeather('rain');
+/// final poem = PoetryService.getPoemByWeather('rain');
 /// print('${poem.title} - ${poem.author}');
 /// print(poem.content);
 /// ```
